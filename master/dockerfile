@@ -1,6 +1,38 @@
-# Use base image
-FROM 192.168.1.56:5000/jmeter-base
-MAINTAINER RichardBurton
+FROM alpine:3.18
 
-# Ports to be exposed from the container for JMeter Master
-EXPOSE 60000
+# JMeter version
+ARG JMETER_VERSION=5.5
+
+# Install dependencies
+RUN apk update && \
+    apk add --no-cache openjdk11-jre wget curl && \
+    mkdir /jmeter
+
+# Download and install JMeter
+WORKDIR /jmeter
+RUN wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz && \
+    tar -xzf apache-jmeter-${JMETER_VERSION}.tgz && \
+    rm apache-jmeter-${JMETER_VERSION}.tgz && \
+    mv apache-jmeter-${JMETER_VERSION} jmeter
+
+ENV JMETER_HOME=/jmeter/jmeter
+ENV PATH=$JMETER_HOME/bin:$PATH
+
+
+# 4. Install Plugins Manager (Required for auto-installing plugins)
+RUN cd $JMETER_HOME/lib/ext && \
+    wget https://repo1.maven.org/maven2/kg/apc/jmeter-plugins-manager/1.9/jmeter-plugins-manager-1.9.jar
+
+RUN cd $JMETER_HOME/lib/ && \
+    wget http://search.maven.org/remotecontent?filepath=kg/apc/cmdrunner/2.3/cmdrunner-2.3.jar && \
+mv  remotecontent?filepath=kg%2Fapc%2Fcmdrunner%2F2.3%2Fcmdrunner-2.3.jar cmdrunner-2.3.jar
+
+# 6. Install Plugins Manager Installer
+RUN cd $JMETER_HOME && java -cp lib/ext/jmeter-plugins-manager-1.9.jar org.jmeterplugins.repository.PluginManagerCMDInstaller
+
+# 7. Install jpgc-standardset and any others
+RUN PluginsManagerCMD.sh install jpgc-standard
+
+RUN cd /jmeter/jmeter/lib/ext && \
+    wget https://github.com/rburton04/perf-stack/blob/main/jmeter-plugins-influxdb2-listener-2.6.jar
+
