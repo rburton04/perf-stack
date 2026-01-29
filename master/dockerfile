@@ -1,0 +1,6 @@
+# Use base image
+FROM 192.168.1.56:5000/jmeter-base
+MAINTAINER RichardBurton
+
+# Ports to be exposed from the container for JMeter Master
+EXPOSE 60000
