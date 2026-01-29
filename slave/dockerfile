@@ -1,9 +1,26 @@
-# Use  base image
-FROM 192.168.1.56:5000/jmeter-base
-MAINTAINER RichardBurton
+FROM alpine:3.18
 
-# Ports to be exposed from the container for JMeter Slaves/Server
+ARG JMETER_VERSION=5.5
+
+RUN apk update && \
+    apk add --no-cache openjdk11-jre wget curl && \
+    mkdir /jmeter
+
+WORKDIR /jmeter
+RUN wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-${JMETER_VERSION}.tgz && \
+    tar -xzf apache-jmeter-${JMETER_VERSION}.tgz && \
+    rm apache-jmeter-${JMETER_VERSION}.tgz && \
+    mv apache-jmeter-${JMETER_VERSION} jmeter
+
+ENV JMETER_HOME /jmeter/jmeter
+ENV PATH $JMETER_HOME/bin:$PATH
+
+# Configure JMeter for distributed testing
+RUN echo "server.rmi.ssl.disable=true" >> $JMETER_HOME/bin/jmeter.properties && \
+    echo "server.rmi.localport=1099" >> $JMETER_HOME/bin/jmeter.properties && \
+    echo "server_port=1099" >> $JMETER_HOME/bin/jmeter.properties
+
 EXPOSE 1099 50000
 
-# Application to run on starting the container
-ENTRYPOINT $JMETER_HOME/bin/jmeter-server -Dserver.rmi.ssl.disable=true -Dserver.rmi.localport=50000 -Dserver_port=1099
+WORKDIR /jmeter/jmeter
+ENTRYPOINT ["jmeter-server", "-Dserver.rmi.localport=1099", "-Dserver_port=1099", "-Jserver.rmi.ssl.disable=true"]
