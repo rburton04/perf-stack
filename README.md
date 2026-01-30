@@ -8,25 +8,38 @@ tag all images for local registry:
 
 
 docker tag jmeter-master:latest localhost:5000/jmeter-master
+
 docker tag jmeter-slave:latest localhost:5000/jmeter-slave
 
 push all images to local registry:
 
 docker tag jenkins/jenkins:latest localhost:5000/jenkins
+
 docker tag influxdb:2 localhost:5000/influxdb
+
 docker tag portainer/agent:latest localhost:5000/portainer-agent
+
 docker tag portainer/portainer:latest localhost:5000/portainer
+
 docker tag grafana/grafana:9.1.6 localhost:5000/grafana
+
 docker tag gitlab/gitlab-ce:16.4.1-ce.0 localhost:5000/gitlab
 
+
 docker push localhost:5000/jenkins
+
 docker push localhost:5000/influxdb
+
 docker push localhost:5000/portainer-agent
+
 docker push localhost:5000/portainer
+
 docker push localhost:5000/grafana
+
 docker push localhost:5000/gitlab
 
 git push localhost:5000/jmeter-master
+
 git push localhost:5000/jmeter-slave
 
 check local images
