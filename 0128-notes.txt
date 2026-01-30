@@ -10,9 +10,6 @@ tag all images for local registry:
 
 docker tag jmeter-master:latest 192.168.1.73:5000/jmeter-master
 docker tag jmeter-slave:latest 192.168.1.73:5000/jmeter-slave
-
-push all images to local registry:
-
 docker tag jenkins/jenkins:latest 192.168.1.73:5000/jenkins
 docker tag influxdb:2 192.168.1.73:5000/influxdb
 docker tag portainer/agent:latest 192.168.1.73:5000/portainer-agent
@@ -20,13 +17,14 @@ docker tag portainer/portainer:latest 192.168.1.73:5000/portainer
 docker tag grafana/grafana:9.1.6 192.168.1.73:5000/grafana
 docker tag gitlab/gitlab-ce:16.4.1-ce.0 192.168.1.73:5000/gitlab
 
+push all images to local registry:
+
 docker push 192.168.1.73:5000/jenkins
 docker push 192.168.1.73:5000/influxdb
 docker push 192.168.1.73:5000/portainer-agent
 docker push 192.168.1.73:5000/portainer
 docker push 192.168.1.73:5000/grafana
 docker push 192.168.1.73:5000/gitlab
-
 docker push 192.168.1.73:5000/jmeter-master
 docker push 192.168.1.73:5000/jmeter-slave
 
@@ -67,4 +65,5 @@ In the slave VM, add the key copied from the .ssh/rsa_pub of master to .ssh/auth
 
 run jmeter container standalone for debugging
  docker run -dit --name master-test master-test
+
 
