@@ -1,11 +1,10 @@
 from folder with files run:
 
 docker build -t jmeter-master .
+
 docker build -t jmeter-slave .
 
-
 tag all images for local registry:
-
 
 docker tag jmeter-master:latest localhost:5000/jmeter-master
 
@@ -25,6 +24,7 @@ docker tag grafana/grafana:9.1.6 localhost:5000/grafana
 
 docker tag gitlab/gitlab-ce:16.4.1-ce.0 localhost:5000/gitlab
 
+Push Images:
 
 docker push localhost:5000/jenkins
 
@@ -38,9 +38,9 @@ docker push localhost:5000/grafana
 
 docker push localhost:5000/gitlab
 
-git push localhost:5000/jmeter-master
+Docker push localhost:5000/jmeter-master
 
-git push localhost:5000/jmeter-slave
+Docker push localhost:5000/jmeter-slave
 
 check local images
 http://localhost:5000/v2/_catalog
