@@ -6,7 +6,9 @@ ARG JMETER_VERSION=5.5
 # Install dependencies
 RUN apk update && \
     apk add --no-cache openjdk11-jre wget curl && \
-    mkdir /jmeter
+    mkdir /jmeter && \
+    mkdir -p /jmeter/0213 && \
+    mkdir -p /jmeter/results
 
 # Download and install JMeter
 WORKDIR /jmeter
@@ -35,4 +37,6 @@ RUN PluginsManagerCMD.sh install jpgc-standard
 
 RUN cd /jmeter/jmeter/lib/ext && \
     wget https://github.com/rburton04/perf-stack/blob/main/jmeter-plugins-influxdb2-listener-2.6.jar
+
+
 
