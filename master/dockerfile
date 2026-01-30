@@ -1,11 +1,11 @@
-FROM alpine:3.18
+FROM alpine:3.23.3
 
 # JMeter version
 ARG JMETER_VERSION=5.5
 
 # Install dependencies
 RUN apk update && \
-    apk add --no-cache openjdk11-jre wget curl && \
+    apk add --no-cache openjdk21-jre wget curl && \
     mkdir /jmeter && \
     mkdir -p /jmeter/0213 && \
     mkdir -p /jmeter/results
