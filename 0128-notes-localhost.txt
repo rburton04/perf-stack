@@ -20,15 +20,15 @@ docker tag portainer/portainer:latest localhost:5000/portainer
 docker tag grafana/grafana:9.1.6 localhost:5000/grafana
 docker tag gitlab/gitlab-ce:16.4.1-ce.0 localhost:5000/gitlab
 
-git push localhost:5000/jenkins
-git push localhost:5000/influxdb
-git push localhost:5000/portainer-agent
-git push localhost:5000/portainer
-git push localhost:5000/grafana
-git push localhost:5000/gitlab
+Docker push localhost:5000/jenkins
+Docker push localhost:5000/influxdb
+Docker push localhost:5000/portainer-agent
+Docker push localhost:5000/portainer
+Docker push localhost:5000/grafana
+Docker push localhost:5000/gitlab
 
-git push localhost:5000/jmeter-master
-git push localhost:5000/jmeter-slave
+Docker push localhost:5000/jmeter-master
+Docker push localhost:5000/jmeter-slave
 
 check local images
 http://localhost:5000/v2/_catalog
@@ -67,3 +67,4 @@ In the slave VM, add the key copied from the .ssh/rsa_pub of master to .ssh/auth
 
 run jmeter container standalone for debugging
  docker run -dit --name master-test master-test
+
